@@ -18,6 +18,19 @@
     #printArea { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px; }
     .no-print { display: none !important; }
   }
+  .file-upload-box {
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .file-upload-box:hover { border-color: #059669; background: #f0fdf4; }
+  .file-upload-box.has-file { border-color: #059669; background: #f0fdf4; }
+  .file-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem; background: #f9fafb; border-radius: 0.375rem; margin-top: 0.5rem; }
+  .progress-bar { height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-top: 0.5rem; }
+  .progress-fill { height: 100%; background: #059669; transition: width 0.3s; }
 </style>
 </head>
 <body class="bg-gray-50">
@@ -33,8 +46,8 @@
       </div>
       <nav class="mt-3 md:mt-0 flex gap-2 bg-emerald-900/30 rounded-lg p-1 flex-wrap">
         <button onclick="showView('home')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">🏠 Beranda</button>
-        <button onclick="showView('formPengecer')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20"> Form Pengecer</button>
-        <button onclick="showView('formRestoran')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">️ Form Restoran/Bar</button>
+        <button onclick="showView('formPengecer')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">🏪 Form Pengecer</button>
+        <button onclick="showView('formRestoran')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">🍽️ Form Restoran/Bar</button>
         <button onclick="showView('data')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">📊 Data</button>
       </nav>
     </div>
@@ -46,49 +59,20 @@
 <!-- VIEW: HOME -->
 <section id="viewHome" class="view active">
   <div class="container mx-auto px-4 py-12">
-    <div class="max-w-4xl mx-auto">
-      <div class="text-center mb-8">
-        <div class="text-6xl mb-4">🏛️</div>
-        <h2 class="text-3xl font-bold text-gray-800 mb-2">Sistem BAPL Online</h2>
-        <p class="text-gray-600">Dinas Koperasi, Usaha Kecil Menengah dan Perdagangan Kabupaten Badung</p>
-        <p class="text-sm text-gray-500 mt-2">Gedung Unit 10 (Lantai 1,2) Pusat Pemerintahan Mangupura Mandala<br/>Jalan Raya Sempidi, Mengwi, Badung, Bali</p>
-      </div>
-
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="text-6xl mb-4">🏛️</div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Sistem BAPL Online</h2>
+      <p class="text-gray-600">Dinas Koperasi, Usaha Kecil Menengah dan Perdagangan Kabupaten Badung</p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-600 hover:shadow-xl transition cursor-pointer" onclick="showView('formPengecer')">
-          <div class="text-4xl mb-3"></div>
+          <div class="text-4xl mb-3">🏪</div>
           <h3 class="text-xl font-bold text-gray-800 mb-2">Form Pengecer</h3>
-          <p class="text-sm text-gray-600">Untuk Supermarket, Hipermarket, dan Pengecer Khusus yang menjual minuman beralkohol Golongan A, B, C</p>
-          <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">Input Data</button>
+          <p class="text-sm text-gray-600">Supermarket, Hipermarket, dan Pengecer Khusus</p>
         </div>
-
         <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-600 hover:shadow-xl transition cursor-pointer" onclick="showView('formRestoran')">
           <div class="text-4xl mb-3">🍽️</div>
           <h3 class="text-xl font-bold text-gray-800 mb-2">Form Restoran/Bar/Hotel</h3>
-          <p class="text-sm text-gray-600">Untuk Restoran, Bar, Hotel Bintang, dan Hotel Melati yang menjual minuman beralkohol Golongan A, B, C</p>
-          <button class="mt-4 w-full bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 font-semibold">Input Data</button>
-        </div>
-      </div>
-
-      <div class="mt-8 bg-white rounded-xl shadow p-6">
-        <h3 class="font-bold text-lg mb-4">📋 Statistik Data</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div class="bg-blue-50 p-4 rounded-lg">
-            <p class="text-3xl font-bold text-blue-700" id="statTotal">0</p>
-            <p class="text-sm text-gray-600">Total Data</p>
-          </div>
-          <div class="bg-emerald-50 p-4 rounded-lg">
-            <p class="text-3xl font-bold text-emerald-700" id="statPengecer">0</p>
-            <p class="text-sm text-gray-600">Pengecer</p>
-          </div>
-          <div class="bg-purple-50 p-4 rounded-lg">
-            <p class="text-3xl font-bold text-purple-700" id="statRestoran">0</p>
-            <p class="text-sm text-gray-600">Restoran/Bar</p>
-          </div>
-          <div class="bg-yellow-50 p-4 rounded-lg">
-            <p class="text-3xl font-bold text-yellow-700" id="statTahunIni">0</p>
-            <p class="text-sm text-gray-600">Tahun Ini</p>
-          </div>
+          <p class="text-sm text-gray-600">Restoran, Bar, Hotel Bintang, dan Hotel Melati</p>
         </div>
       </div>
     </div>
@@ -100,14 +84,14 @@
   <div class="container mx-auto px-4 py-6 max-w-5xl">
     <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-600">
       <div class="mb-6 border-b pb-3">
-        <h2 class="text-2xl font-bold text-blue-800">🏪 Form Pengecer (Supermarket/Hipermarket)</h2>
+        <h2 class="text-2xl font-bold text-blue-800">🏪 Form Pengecer</h2>
         <p class="text-sm text-gray-600 mt-1">Berita Acara Penelitian Lapangan - Penjualan Minuman Beralkohol</p>
       </div>
 
       <form id="formPengecer" class="space-y-6">
         <input type="hidden" id="pengecerId"/>
         
-        <!-- Info Usaha -->
+        <!-- Info Perusahaan -->
         <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
           <h3 class="font-bold text-blue-900 mb-3">📋 Informasi Perusahaan/Usaha</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -153,24 +137,24 @@
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Nomor Telepon</label>
-              <input id="pengecerTelp" placeholder="0361-xxxxxxx" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+              <input id="pengecerTelp" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Email</label>
-              <input id="pengecerEmail" type="email" placeholder="email@example.com" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+              <input id="pengecerEmail" type="email" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">NPWP Perusahaan</label>
-              <input id="pengecerNPWP" placeholder="00.000.000.0-000.000" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+              <input id="pengecerNPWP" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">BPJS Ketenagakerjaan & Kesehatan</label>
-              <input id="pengecerBPJS" placeholder="Nomor BPJS" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+              <input id="pengecerBPJS" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
             </div>
           </div>
         </div>
 
-        <!-- Info Usaha/Outlet -->
+        <!-- Info Usaha -->
         <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
           <h3 class="font-bold text-emerald-900 mb-3">🏪 Informasi Usaha/Outlet</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -198,12 +182,12 @@
           </div>
         </div>
 
-        <!-- Jenis Minuman Beralkohol -->
+        <!-- Jenis Minuman -->
         <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
-          <h3 class="font-bold text-purple-900 mb-3">🍷 Jenis Minuman Beralkohol yang Dijual</h3>
+          <h3 class="font-bold text-purple-900 mb-3">🍷 Jenis Minuman Beralkohol</h3>
           <div class="space-y-3">
             <div>
-              <label class="block text-sm font-semibold mb-2">Golongan A (Kadar alkohol 1-5%)</label>
+              <label class="block text-sm font-semibold mb-2">Golongan A (1-5%)</label>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA1" value="Shandy" class="rounded"/> <span>Shandy</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA2" value="Minuman Ringan Beralkohol" class="rounded"/> <span>Minuman Ringan Beralkohol</span></label>
@@ -217,21 +201,21 @@
               </div>
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2">Golongan B (Kadar alkohol 5-20%)</label>
+              <label class="block text-sm font-semibold mb-2">Golongan B (5-20%)</label>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB1" value="Reduced Alcohol Wine" class="rounded"/> <span>Reduced Alcohol Wine</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB2" value="Anggur/Wine" class="rounded"/> <span>Anggur/Wine</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB3" value="Sparkling Wine/Champagne" class="rounded"/> <span>Sparkling Wine/Champagne</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB4" value="Carbonated Wine" class="rounded"/> <span>Carbonated Wine</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB5" value="Koktail Anggur/Wine Cocktail" class="rounded"/> <span>Koktail Anggur/Wine Cocktail</span></label>
-                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB6" value="Anggur Tonikum Kinina/Quinine" class="rounded"/> <span>Anggur Tonikum Kinina/Quinine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB6" value="Anggur Tonikum Kinina/Quinine" class="rounded"/> <span>Anggur Tonikum Kinina</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB7" value="Tonic Wine" class="rounded"/> <span>Tonic Wine</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB8" value="Meat Wine/Beef Wine" class="rounded"/> <span>Meat Wine/Beef Wine</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB9" value="Malt Wine/Anggur Buah" class="rounded"/> <span>Malt Wine/Anggur Buah</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB10" value="Anggur Buah Apel/Cider" class="rounded"/> <span>Anggur Buah Apel/Cider</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB11" value="Anggur Sari Buah Pir/Perry" class="rounded"/> <span>Anggur Sari Buah Pir/Perry</span></label>
-                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB12" value="Anggur Beras/Sake/Rice Wine/Soju" class="rounded"/> <span>Anggur Beras/Sake/Rice Wine/Soju</span></label>
-                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB13" value="Anggur Sari Sayuran/Vegetable Wine" class="rounded"/> <span>Anggur Sari Sayuran</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB12" value="Anggur Beras/Sake/Rice Wine/Soju" class="rounded"/> <span>Anggur Beras/Sake/Soju</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB13" value="Anggur Sari Sayuran" class="rounded"/> <span>Anggur Sari Sayuran</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB14" value="Honey Wine/Mead" class="rounded"/> <span>Honey Wine/Mead</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB15" value="Minuman Beralkohol Beraroma" class="rounded"/> <span>Minuman Beralkohol Beraroma</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB16" value="Beras Kencur" class="rounded"/> <span>Beras Kencur</span></label>
@@ -239,10 +223,10 @@
               </div>
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2">Golongan C (Kadar alkohol 20-55%)</label>
+              <label class="block text-sm font-semibold mb-2">Golongan C (20-55%)</label>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC1" value="Brendi/Brandy" class="rounded"/> <span>Brendi/Brandy</span></label>
-                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC2" value="Brendi Buah/Fruit Brandy" class="rounded"/> <span>Brendi Buah/Fruit Brandy</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC2" value="Brendi Buah/Fruit Brandy" class="rounded"/> <span>Brendi Buah</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC3" value="Wiski/Whiskies" class="rounded"/> <span>Wiski/Whiskies</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC4" value="Rum" class="rounded"/> <span>Rum</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC5" value="Gin" class="rounded"/> <span>Gin</span></label>
@@ -261,48 +245,103 @@
           </div>
         </div>
 
-        <!-- Persyaratan Dokumen -->
+        <!-- Upload Dokumen -->
         <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-          <h3 class="font-bold text-yellow-900 mb-3">📄 Persyaratan Dokumen</h3>
-          <div class="space-y-2">
-            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc1" class="rounded"/> <span>NIB (Nomor Induk Berusaha)</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc2" class="rounded"/> <span>NPWP Penanggung Jawab</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc3" class="rounded"/> <span>KTP/KITAS Penanggung Jawab</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc4" class="rounded"/> <span>NPPBKC</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc5" class="rounded"/> <span>Pakta Integritas dan Pernyataan Pengelolaan Sampah</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc6" class="rounded"/> <span>Surat Penunjukan dari Distributor/Subdistributor</span></label>
+          <h3 class="font-bold text-yellow-900 mb-3"> Upload Dokumen Persyaratan</h3>
+          <p class="text-xs text-gray-600 mb-3">Format: PDF, JPG, PNG (Maks 5MB per file)</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold mb-1">NIB (Nomor Induk Berusaha) *</label>
+              <div class="file-upload-box" onclick="document.getElementById('fileNIB').click()">
+                <div id="fileNIBLabel">📄 Klik untuk upload NIB</div>
+                <input type="file" id="fileNIB" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'NIB')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressNIB"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="fileNIBPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">NPWP Penanggung Jawab *</label>
+              <div class="file-upload-box" onclick="document.getElementById('fileNPWP').click()">
+                <div id="fileNPWPLabel">📄 Klik untuk upload NPWP</div>
+                <input type="file" id="fileNPWP" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'NPWP')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressNPWP"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="fileNPWPPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">KTP/KITAS Penanggung Jawab *</label>
+              <div class="file-upload-box" onclick="document.getElementById('fileKTP').click()">
+                <div id="fileKTPLabel">📄 Klik untuk upload KTP/KITAS</div>
+                <input type="file" id="fileKTP" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'KTP')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressKTP"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="fileKTPPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">NPPBKC *</label>
+              <div class="file-upload-box" onclick="document.getElementById('fileNPPBKC').click()">
+                <div id="fileNPPBKCLabel">📄 Klik untuk upload NPPBKC</div>
+                <input type="file" id="fileNPPBKC" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'NPPBKC')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressNPPBKC"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="fileNPPBKCPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">Pakta Integritas & Pernyataan Pengelolaan Sampah *</label>
+              <div class="file-upload-box" onclick="document.getElementById('filePakta').click()">
+                <div id="filePaktaLabel">📄 Klik untuk upload Pakta Integritas</div>
+                <input type="file" id="filePakta" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'Pakta')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressPakta"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="filePaktaPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">Surat Penunjukan dari Distributor/Subdistributor *</label>
+              <div class="file-upload-box" onclick="document.getElementById('fileSuratPenunjukan').click()">
+                <div id="fileSuratPenunjukanLabel">📄 Klik untuk upload Surat Penunjukan</div>
+                <input type="file" id="fileSuratPenunjukan" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'SuratPenunjukan')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressSuratPenunjukan"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="fileSuratPenunjukanPreview"></div>
+            </div>
           </div>
         </div>
 
-        <!-- Keterangan Jarak -->
+        <!-- Jarak -->
         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-          <h3 class="font-bold text-gray-900 mb-3">📍 Keterangan Jarak dengan Lokasi Sekitar</h3>
+          <h3 class="font-bold text-gray-900 mb-3">📍 Keterangan Jarak</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-sm font-semibold mb-1">Jarak ke Tempat Ibadah (meter)</label>
-              <input id="pengecerJarakIbadah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+              <input id="pengecerJarakIbadah" type="number" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Jarak ke Sekolah (meter)</label>
-              <input id="pengecerJarakSekolah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+              <input id="pengecerJarakSekolah" type="number" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Jarak ke Rumah Sakit (meter)</label>
-              <input id="pengecerJarakRS" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+              <input id="pengecerJarakRS" type="number" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
             </div>
           </div>
         </div>
 
         <div class="flex justify-end gap-3 pt-4 border-t">
           <button type="button" onclick="resetForm('pengecer')" class="px-4 py-2 border rounded-lg hover:bg-gray-100">🔄 Reset</button>
-          <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">💾 Simpan Data</button>
+          <button type="submit" id="btnSubmitPengecer" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">💾 Simpan Data</button>
         </div>
       </form>
     </div>
   </div>
 </section>
 
-<!-- VIEW: FORM RESTORAN/BAR -->
+<!-- VIEW: FORM RESTORAN (Struktur sama dengan Pengecer, ganti prefix 'pengecer' jadi 'restoran') -->
 <section id="viewFormRestoran" class="view">
   <div class="container mx-auto px-4 py-6 max-w-5xl">
     <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-600">
@@ -314,7 +353,7 @@
       <form id="formRestoran" class="space-y-6">
         <input type="hidden" id="restoranId"/>
         
-        <!-- Info Usaha -->
+        <!-- Info Perusahaan -->
         <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
           <h3 class="font-bold text-emerald-900 mb-3"> Informasi Perusahaan/Usaha</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -360,26 +399,26 @@
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Nomor Telepon</label>
-              <input id="restoranTelp" placeholder="0361-xxxxxxx" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+              <input id="restoranTelp" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Email</label>
-              <input id="restoranEmail" type="email" placeholder="email@example.com" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+              <input id="restoranEmail" type="email" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">NPWP Perusahaan</label>
-              <input id="restoranNPWP" placeholder="00.000.000.0-000.000" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+              <input id="restoranNPWP" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">BPJS Ketenagakerjaan & Kesehatan</label>
-              <input id="restoranBPJS" placeholder="Nomor BPJS" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+              <input id="restoranBPJS" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
             </div>
           </div>
         </div>
 
-        <!-- Info Usaha/Outlet -->
+        <!-- Info Usaha -->
         <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-          <h3 class="font-bold text-blue-900 mb-3"> Informasi Usaha/Outlet</h3>
+          <h3 class="font-bold text-blue-900 mb-3">🍽️ Informasi Usaha/Outlet</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-semibold mb-1">Kegiatan Usaha *</label>
@@ -406,12 +445,12 @@
           </div>
         </div>
 
-        <!-- Jenis Minuman Beralkohol -->
+        <!-- Jenis Minuman (sama seperti pengecer) -->
         <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
-          <h3 class="font-bold text-purple-900 mb-3">🍷 Jenis Minuman Beralkohol yang Dijual</h3>
+          <h3 class="font-bold text-purple-900 mb-3"> Jenis Minuman Beralkohol</h3>
           <div class="space-y-3">
             <div>
-              <label class="block text-sm font-semibold mb-2">Golongan A (Kadar alkohol 1-5%)</label>
+              <label class="block text-sm font-semibold mb-2">Golongan A (1-5%)</label>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 <label class="flex items-center gap-2"><input type="checkbox" id="restoranA1" value="Shandy" class="rounded"/> <span>Shandy</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="restoranA2" value="Minuman Ringan Beralkohol" class="rounded"/> <span>Minuman Ringan Beralkohol</span></label>
@@ -425,7 +464,7 @@
               </div>
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2">Golongan B (Kadar alkohol 5-20%)</label>
+              <label class="block text-sm font-semibold mb-2">Golongan B (5-20%)</label>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 <label class="flex items-center gap-2"><input type="checkbox" id="restoranB1" value="Reduced Alcohol Wine" class="rounded"/> <span>Reduced Alcohol Wine</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="restoranB2" value="Anggur/Wine" class="rounded"/> <span>Anggur/Wine</span></label>
@@ -446,7 +485,7 @@
               </div>
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2">Golongan C (Kadar alkohol 20-55%)</label>
+              <label class="block text-sm font-semibold mb-2">Golongan C (20-55%)</label>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 <label class="flex items-center gap-2"><input type="checkbox" id="restoranC1" value="Brendi/Brandy" class="rounded"/> <span>Brendi/Brandy</span></label>
                 <label class="flex items-center gap-2"><input type="checkbox" id="restoranC2" value="Brendi Buah/Fruit Brandy" class="rounded"/> <span>Brendi Buah</span></label>
@@ -468,42 +507,106 @@
           </div>
         </div>
 
-        <!-- Persyaratan Dokumen -->
+        <!-- Upload Dokumen Restoran -->
         <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-          <h3 class="font-bold text-yellow-900 mb-3">📄 Persyaratan Dokumen</h3>
-          <div class="space-y-2">
-            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc1" class="rounded"/> <span>NIB (Nomor Induk Berusaha)</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc2" class="rounded"/> <span>Sertifikat Standar/Izin</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc3" class="rounded"/> <span>NPWP Penanggung Jawab</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc4" class="rounded"/> <span>KTP/KITAS Penanggung Jawab</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc5" class="rounded"/> <span>NPPBKC</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc6" class="rounded"/> <span>Pakta Integritas dan Pernyataan Pengelolaan Sampah</span></label>
-            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc7" class="rounded"/> <span>Surat Penunjukan dari Distributor/Subdistributor</span></label>
+          <h3 class="font-bold text-yellow-900 mb-3">📎 Upload Dokumen Persyaratan</h3>
+          <p class="text-xs text-gray-600 mb-3">Format: PDF, JPG, PNG (Maks 5MB per file)</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold mb-1">NIB *</label>
+              <div class="file-upload-box" onclick="document.getElementById('restoranFileNIB').click()">
+                <div id="restoranFileNIBLabel">📄 Klik untuk upload NIB</div>
+                <input type="file" id="restoranFileNIB" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'restoranNIB')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressrestoranNIB"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="restoranFileNIBPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">Sertifikat Standar/Izin *</label>
+              <div class="file-upload-box" onclick="document.getElementById('restoranFileSertifikat').click()">
+                <div id="restoranFileSertifikatLabel">📄 Klik untuk upload Sertifikat</div>
+                <input type="file" id="restoranFileSertifikat" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'restoranSertifikat')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressrestoranSertifikat"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="restoranFileSertifikatPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">NPWP Penanggung Jawab *</label>
+              <div class="file-upload-box" onclick="document.getElementById('restoranFileNPWP').click()">
+                <div id="restoranFileNPWPLabel">📄 Klik untuk upload NPWP</div>
+                <input type="file" id="restoranFileNPWP" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'restoranNPWP')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressrestoranNPWP"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="restoranFileNPWPPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">KTP/KITAS Penanggung Jawab *</label>
+              <div class="file-upload-box" onclick="document.getElementById('restoranFileKTP').click()">
+                <div id="restoranFileKTPLabel">📄 Klik untuk upload KTP/KITAS</div>
+                <input type="file" id="restoranFileKTP" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'restoranKTP')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressrestoranKTP"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="restoranFileKTPPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">NPPBKC *</label>
+              <div class="file-upload-box" onclick="document.getElementById('restoranFileNPPBKC').click()">
+                <div id="restoranFileNPPBKCLabel">📄 Klik untuk upload NPPBKC</div>
+                <input type="file" id="restoranFileNPPBKC" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'restoranNPPBKC')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressrestoranNPPBKC"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="restoranFileNPPBKCPreview"></div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-1">Pakta Integritas *</label>
+              <div class="file-upload-box" onclick="document.getElementById('restoranFilePakta').click()">
+                <div id="restoranFilePaktaLabel">📄 Klik untuk upload Pakta Integritas</div>
+                <input type="file" id="restoranFilePakta" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'restoranPakta')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressrestoranPakta"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="restoranFilePaktaPreview"></div>
+            </div>
+            
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Surat Penunjukan dari Distributor/Subdistributor *</label>
+              <div class="file-upload-box" onclick="document.getElementById('restoranFileSuratPenunjukan').click()">
+                <div id="restoranFileSuratPenunjukanLabel">📄 Klik untuk upload Surat Penunjukan</div>
+                <input type="file" id="restoranFileSuratPenunjukan" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFileSelect(this, 'restoranSuratPenunjukan')"/>
+              </div>
+              <div class="progress-bar hidden" id="progressrestoranSuratPenunjukan"><div class="progress-fill" style="width: 0%"></div></div>
+              <div id="restoranFileSuratPenunjukanPreview"></div>
+            </div>
           </div>
         </div>
 
-        <!-- Keterangan Jarak -->
+        <!-- Jarak -->
         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-          <h3 class="font-bold text-gray-900 mb-3">📍 Keterangan Jarak dengan Lokasi Sekitar</h3>
+          <h3 class="font-bold text-gray-900 mb-3">📍 Keterangan Jarak</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-sm font-semibold mb-1">Jarak ke Tempat Ibadah (meter)</label>
-              <input id="restoranJarakIbadah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+              <input id="restoranJarakIbadah" type="number" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Jarak ke Sekolah (meter)</label>
-              <input id="restoranJarakSekolah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+              <input id="restoranJarakSekolah" type="number" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-1">Jarak ke Rumah Sakit (meter)</label>
-              <input id="restoranJarakRS" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+              <input id="restoranJarakRS" type="number" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
             </div>
           </div>
         </div>
 
         <div class="flex justify-end gap-3 pt-4 border-t">
           <button type="button" onclick="resetForm('restoran')" class="px-4 py-2 border rounded-lg hover:bg-gray-100">🔄 Reset</button>
-          <button type="submit" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-semibold">💾 Simpan Data</button>
+          <button type="submit" id="btnSubmitRestoran" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-semibold">💾 Simpan Data</button>
         </div>
       </form>
     </div>
@@ -514,9 +617,8 @@
 <section id="viewData" class="view">
   <div class="container mx-auto px-4 py-6">
     <h2 class="text-2xl font-bold text-gray-800 mb-4">📊 Data BAPL</h2>
-    
     <div class="bg-white rounded-xl shadow p-4 grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
-      <input id="searchData" type="text" placeholder=" Cari Nama/No Permohonan..." class="border rounded-lg px-3 py-2 outline-none md:col-span-2"/>
+      <input id="searchData" type="text" placeholder="🔍 Cari Nama/No Permohonan..." class="border rounded-lg px-3 py-2 outline-none md:col-span-2"/>
       <select id="filterJenis" class="border rounded-lg px-3 py-2 outline-none">
         <option value="">-- Semua Jenis --</option>
         <option>Pengecer</option>
@@ -529,7 +631,6 @@
         <option>Golongan C</option>
       </select>
     </div>
-
     <div class="bg-white rounded-xl shadow overflow-x-auto">
       <table class="w-full text-sm text-left">
         <thead class="bg-emerald-700 text-white text-xs uppercase">
@@ -540,11 +641,12 @@
             <th class="px-3 py-3">No Permohonan</th>
             <th class="px-3 py-3">Nama Usaha</th>
             <th class="px-3 py-3">Golongan</th>
+            <th class="px-3 py-3">Dokumen</th>
             <th class="px-3 py-3 text-center">Aksi</th>
           </tr>
         </thead>
         <tbody id="tableData" class="divide-y">
-          <tr><td colspan="7" class="text-center py-10 text-gray-500">Memuat data...</td></tr>
+          <tr><td colspan="8" class="text-center py-10 text-gray-500">Memuat data...</td></tr>
         </tbody>
       </table>
     </div>
@@ -553,7 +655,7 @@
 
 </main>
 
-<!-- MODAL DETAIL & PRINT -->
+<!-- MODAL DETAIL -->
 <div id="modalDetail" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 no-print">
   <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[95vh] overflow-y-auto">
     <div class="p-5 border-b flex justify-between items-center bg-emerald-50 sticky top-0 z-10">
@@ -574,7 +676,6 @@
   <div class="container mx-auto px-4 py-4">
     <div class="text-center text-xs text-gray-500">
       <p>© <span id="yearFooter"></span> Dinas Koperasi, UKM dan Perdagangan Kabupaten Badung</p>
-      <p>Gedung Unit 10 (Lantai 1,2) Pusat Pemerintahan Mangupura Mandala | Tlp. (0361) 9009403</p>
     </div>
   </div>
 </footer>
@@ -583,13 +684,13 @@
 <div id="toast" class="hidden fixed bottom-5 right-5 px-5 py-3 rounded-lg shadow-lg z-50 text-white no-print"></div>
 
 <script>
-/* ============================================================
-   KONFIGURASI — GANTI URL DI BAWAH DENGAN URL WEB APP ANDA
-   ============================================================ */
-const API_URL = "https://script.google.com/macros/s/AKfycbwKv_dL9qRI6SgeqymA1uSi_Hl-BOZX0ucIdcmdcJAppLTd1EGFGKiulOyIv6lGxJgo/exec";
-/* ============================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycbyvVN9adf5utNvCB8fBDEBk7ZjPXBouQ6UKZyAHtTM0U6MA_I3eAo8xCtm0jF-lrd6sDw/exec";
 
 let allData = [];
+let uploadedFiles = {
+  pengecer: { NIB: null, NPWP: null, KTP: null, NPPBKC: null, Pakta: null, SuratPenunjukan: null },
+  restoran: { NIB: null, Sertifikat: null, NPWP: null, KTP: null, NPPBKC: null, Pakta: null, SuratPenunjukan: null }
+};
 
 document.getElementById('yearFooter').textContent = new Date().getFullYear();
 
@@ -604,125 +705,252 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   const viewId = 'view' + name.charAt(0).toUpperCase() + name.slice(1);
   const el = document.getElementById(viewId);
   if (el) el.classList.add('active');
   if (name === 'data') loadData();
-  if (name === 'home') loadStats();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function getCheckedValues(prefix, count) {
-  const values = [];
-  for (let i = 1; i <= count; i++) {
-    const checkbox = document.getElementById(prefix + i);
-    if (checkbox && checkbox.checked) {
-      values.push(checkbox.value);
-    }
+/* ====== FILE UPLOAD HANDLER ====== */
+async function handleFileSelect(input, key) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  // Validasi ukuran (5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('❌ Ukuran file maksimal 5MB', true);
+    input.value = '';
+    return;
   }
-  return values.join(', ');
+  
+  // Validasi tipe file
+  const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+  if (!allowedTypes.includes(file.type)) {
+    showToast('❌ Format file harus PDF, JPG, atau PNG', true);
+    input.value = '';
+    return;
+  }
+  
+  // Tampilkan nama file
+  const labelId = key.startsWith('restoran') ? `restoranFile${key.replace('restoran', '')}Label` : `file${key}Label`;
+  const previewId = key.startsWith('restoran') ? `restoranFile${key.replace('restoran', '')}Preview` : `file${key}Preview`;
+  const progressId = `progress${key}`;
+  
+  const label = document.getElementById(labelId);
+  const preview = document.getElementById(previewId);
+  const progress = document.getElementById(progressId);
+  
+  if (label) label.textContent = `📄 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+  if (label) label.parentElement.classList.add('has-file');
+  
+  // Upload ke server
+  if (progress) progress.classList.remove('hidden');
+  if (preview) preview.innerHTML = '<p class="text-xs text-blue-600 mt-1"> Mengupload...</p>';
+  
+  try {
+    const base64 = await fileToBase64(file);
+    const noPermohonan = key.startsWith('restoran') 
+      ? document.getElementById('restoranNoPermohonan').value || 'DRAFT'
+      : document.getElementById('pengecerNoPermohonan').value || 'DRAFT';
+    const folderName = key.startsWith('restoran') ? 'Restoran' : 'Pengecer';
+    
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'uploadFile',
+        data: {
+          base64: base64,
+          fileName: `${noPermohonan}_${file.name}`,
+          folderName: folderName,
+          noPermohonan: noPermohonan
+        }
+      })
+    });
+    const json = await res.json();
+    
+    if (json.success) {
+      // Simpan info file
+      const formType = key.startsWith('restoran') ? 'restoran' : 'pengecer';
+      const docKey = key.replace('restoran', '');
+      uploadedFiles[formType][docKey] = {
+        fileId: json.fileId,
+        fileName: json.fileName,
+        fileUrl: json.fileUrl,
+        downloadUrl: json.downloadUrl
+      };
+      
+      if (preview) {
+        preview.innerHTML = `
+          <div class="file-item">
+            <div class="flex items-center gap-2">
+              <span class="text-green-600">✅</span>
+              <span class="text-xs">${json.fileName}</span>
+            </div>
+            <div class="flex gap-2">
+              <a href="${json.fileUrl}" target="_blank" class="text-xs text-blue-600 hover:underline">️ Lihat</a>
+              <a href="${json.downloadUrl}" target="_blank" class="text-xs text-green-600 hover:underline">⬇️ Download</a>
+            </div>
+          </div>`;
+      }
+      showToast('✅ File berhasil diupload');
+    } else {
+      throw new Error(json.message);
+    }
+  } catch (err) {
+    if (preview) preview.innerHTML = `<p class="text-xs text-red-600 mt-1"> ${err.message}</p>`;
+    showToast('❌ Gagal upload: ' + err.message, true);
+  } finally {
+    if (progress) progress.classList.add('hidden');
+  }
 }
 
-function getDocChecked(prefix) {
-  const docs = [];
-  for (let i = 1; i <= 7; i++) {
-    const checkbox = document.getElementById(prefix + 'Doc' + i);
-    if (checkbox && checkbox.checked) {
-      docs.push('Doc' + i);
-    }
-  }
-  return docs.join(', ');
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 }
 
-/* ====== SUBMIT PENGEcer ====== */
+/* ====== SUBMIT FORM PENGEcer ====== */
 async function submitPengecer(e) {
   e.preventDefault();
   
-  const payload = {
-    jenis: 'Pengecer',
-    namaPerusahaan: document.getElementById('pengecerNamaPerusahaan').value.trim(),
-    noPermohonan: document.getElementById('pengecerNoPermohonan').value.trim(),
-    status: document.getElementById('pengecerStatus').value,
-    bentukUsaha: document.getElementById('pengecerBentukUsaha').value,
-    golongan: document.getElementById('pengecerGolongan').value,
-    alamat: document.getElementById('pengecerAlamat').value.trim(),
-    telp: document.getElementById('pengecerTelp').value.trim(),
-    email: document.getElementById('pengecerEmail').value.trim(),
-    npwp: document.getElementById('pengecerNPWP').value.trim(),
-    bpjs: document.getElementById('pengecerBPJS').value.trim(),
-    kegiatan: document.getElementById('pengecerKegiatan').value,
-    namaUsaha: document.getElementById('pengecerNamaUsaha').value.trim(),
-    lokasiUsaha: document.getElementById('pengecerLokasiUsaha').value.trim(),
-    penanggungJawab: document.getElementById('pengecerPenanggungJawab').value.trim(),
-    minumanA: getCheckedValues('pengecerA', 9),
-    minumanB: getCheckedValues('pengecerB', 17),
-    minumanC: getCheckedValues('pengecerC', 15),
-    dokumen: getDocChecked('pengecer'),
-    jarakIbadah: document.getElementById('pengecerJarakIbadah').value,
-    jarakSekolah: document.getElementById('pengecerJarakSekolah').value,
-    jarakRS: document.getElementById('pengecerJarakRS').value,
-    tanggal: new Date().toISOString()
-  };
+  const btn = document.getElementById('btnSubmitPengecer');
+  btn.disabled = true;
+  btn.textContent = '⏳ Menyimpan...';
   
   try {
+    const payload = {
+      jenis: 'Pengecer',
+      namaPerusahaan: document.getElementById('pengecerNamaPerusahaan').value.trim(),
+      noPermohonan: document.getElementById('pengecerNoPermohonan').value.trim(),
+      status: document.getElementById('pengecerStatus').value,
+      bentukUsaha: document.getElementById('pengecerBentukUsaha').value,
+      golongan: document.getElementById('pengecerGolongan').value,
+      alamat: document.getElementById('pengecerAlamat').value.trim(),
+      telp: document.getElementById('pengecerTelp').value.trim(),
+      email: document.getElementById('pengecerEmail').value.trim(),
+      npwp: document.getElementById('pengecerNPWP').value.trim(),
+      bpjs: document.getElementById('pengecerBPJS').value.trim(),
+      kegiatan: document.getElementById('pengecerKegiatan').value,
+      namaUsaha: document.getElementById('pengecerNamaUsaha').value.trim(),
+      lokasiUsaha: document.getElementById('pengecerLokasiUsaha').value.trim(),
+      penanggungJawab: document.getElementById('pengecerPenanggungJawab').value.trim(),
+      minumanA: getCheckedValues('pengecerA', 9),
+      minumanB: getCheckedValues('pengecerB', 17),
+      minumanC: getCheckedValues('pengecerC', 15),
+      jarakIbadah: document.getElementById('pengecerJarakIbadah').value,
+      jarakSekolah: document.getElementById('pengecerJarakSekolah').value,
+      jarakRS: document.getElementById('pengecerJarakRS').value,
+      tanggal: new Date().toISOString(),
+      // File IDs
+      fileNIB: uploadedFiles.pengecer.NIB ? uploadedFiles.pengecer.NIB.fileId : '',
+      fileNPWP: uploadedFiles.pengecer.NPWP ? uploadedFiles.pengecer.NPWP.fileId : '',
+      fileKTP: uploadedFiles.pengecer.KTP ? uploadedFiles.pengecer.KTP.fileId : '',
+      fileNPPBKC: uploadedFiles.pengecer.NPPBKC ? uploadedFiles.pengecer.NPPBKC.fileId : '',
+      filePakta: uploadedFiles.pengecer.Pakta ? uploadedFiles.pengecer.Pakta.fileId : '',
+      fileSuratPenunjukan: uploadedFiles.pengecer.SuratPenunjukan ? uploadedFiles.pengecer.SuratPenunjukan.fileId : ''
+    };
+    
     const res = await fetch(API_URL, {
       method: 'POST',
       body: JSON.stringify({ action: 'createPengecer', data: payload })
     });
     const json = await res.json();
     if (!json.success) throw new Error(json.message);
+    
     showToast('✅ Data Pengecer berhasil disimpan!');
     resetForm('pengecer');
     showView('home');
-  } catch (err) { showToast('❌ ' + err.message, true); }
+  } catch (err) {
+    showToast('❌ ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 Simpan Data';
+  }
 }
 
-/* ====== SUBMIT RESTORAN ====== */
+/* ====== SUBMIT FORM RESTORAN ====== */
 async function submitRestoran(e) {
   e.preventDefault();
   
-  const payload = {
-    jenis: 'Restoran/Bar/Hotel',
-    namaPerusahaan: document.getElementById('restoranNamaPerusahaan').value.trim(),
-    noPermohonan: document.getElementById('restoranNoPermohonan').value.trim(),
-    status: document.getElementById('restoranStatus').value,
-    bentukUsaha: document.getElementById('restoranBentukUsaha').value,
-    golongan: document.getElementById('restoranGolongan').value,
-    alamat: document.getElementById('restoranAlamat').value.trim(),
-    telp: document.getElementById('restoranTelp').value.trim(),
-    email: document.getElementById('restoranEmail').value.trim(),
-    npwp: document.getElementById('restoranNPWP').value.trim(),
-    bpjs: document.getElementById('restoranBPJS').value.trim(),
-    kegiatan: document.getElementById('restoranKegiatan').value,
-    namaUsaha: document.getElementById('restoranNamaUsaha').value.trim(),
-    lokasiUsaha: document.getElementById('restoranLokasiUsaha').value.trim(),
-    penanggungJawab: document.getElementById('restoranPenanggungJawab').value.trim(),
-    minumanA: getCheckedValues('restoranA', 9),
-    minumanB: getCheckedValues('restoranB', 16),
-    minumanC: getCheckedValues('restoranC', 15),
-    dokumen: getDocChecked('restoran'),
-    jarakIbadah: document.getElementById('restoranJarakIbadah').value,
-    jarakSekolah: document.getElementById('restoranJarakSekolah').value,
-    jarakRS: document.getElementById('restoranJarakRS').value,
-    tanggal: new Date().toISOString()
-  };
+  const btn = document.getElementById('btnSubmitRestoran');
+  btn.disabled = true;
+  btn.textContent = '⏳ Menyimpan...';
   
   try {
+    const payload = {
+      jenis: 'Restoran/Bar/Hotel',
+      namaPerusahaan: document.getElementById('restoranNamaPerusahaan').value.trim(),
+      noPermohonan: document.getElementById('restoranNoPermohonan').value.trim(),
+      status: document.getElementById('restoranStatus').value,
+      bentukUsaha: document.getElementById('restoranBentukUsaha').value,
+      golongan: document.getElementById('restoranGolongan').value,
+      alamat: document.getElementById('restoranAlamat').value.trim(),
+      telp: document.getElementById('restoranTelp').value.trim(),
+      email: document.getElementById('restoranEmail').value.trim(),
+      npwp: document.getElementById('restoranNPWP').value.trim(),
+      bpjs: document.getElementById('restoranBPJS').value.trim(),
+      kegiatan: document.getElementById('restoranKegiatan').value,
+      namaUsaha: document.getElementById('restoranNamaUsaha').value.trim(),
+      lokasiUsaha: document.getElementById('restoranLokasiUsaha').value.trim(),
+      penanggungJawab: document.getElementById('restoranPenanggungJawab').value.trim(),
+      minumanA: getCheckedValues('restoranA', 9),
+      minumanB: getCheckedValues('restoranB', 16),
+      minumanC: getCheckedValues('restoranC', 15),
+      jarakIbadah: document.getElementById('restoranJarakIbadah').value,
+      jarakSekolah: document.getElementById('restoranJarakSekolah').value,
+      jarakRS: document.getElementById('restoranJarakRS').value,
+      tanggal: new Date().toISOString(),
+      // File IDs
+      fileNIB: uploadedFiles.restoran.NIB ? uploadedFiles.restoran.NIB.fileId : '',
+      fileSertifikat: uploadedFiles.restoran.Sertifikat ? uploadedFiles.restoran.Sertifikat.fileId : '',
+      fileNPWP: uploadedFiles.restoran.NPWP ? uploadedFiles.restoran.NPWP.fileId : '',
+      fileKTP: uploadedFiles.restoran.KTP ? uploadedFiles.restoran.KTP.fileId : '',
+      fileNPPBKC: uploadedFiles.restoran.NPPBKC ? uploadedFiles.restoran.NPPBKC.fileId : '',
+      filePakta: uploadedFiles.restoran.Pakta ? uploadedFiles.restoran.Pakta.fileId : '',
+      fileSuratPenunjukan: uploadedFiles.restoran.SuratPenunjukan ? uploadedFiles.restoran.SuratPenunjukan.fileId : ''
+    };
+    
     const res = await fetch(API_URL, {
       method: 'POST',
       body: JSON.stringify({ action: 'createRestoran', data: payload })
     });
     const json = await res.json();
     if (!json.success) throw new Error(json.message);
+    
     showToast('✅ Data Restoran/Bar/Hotel berhasil disimpan!');
     resetForm('restoran');
     showView('home');
-  } catch (err) { showToast('❌ ' + err.message, true); }
+  } catch (err) {
+    showToast('❌ ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 Simpan Data';
+  }
+}
+
+function getCheckedValues(prefix, count) {
+  const values = [];
+  for (let i = 1; i <= count; i++) {
+    const checkbox = document.getElementById(prefix + i);
+    if (checkbox && checkbox.checked) values.push(checkbox.value);
+  }
+  return values.join(', ');
 }
 
 function resetForm(type) {
   document.getElementById('form' + type.charAt(0).toUpperCase() + type.slice(1)).reset();
+  uploadedFiles[type] = {};
+  // Reset semua label dan preview
+  document.querySelectorAll(`[id^="${type === 'pengecer' ? 'file' : 'restoranFile'}"]`).forEach(el => {
+    if (el.id.endsWith('Label')) el.textContent = '📄 Klik untuk upload';
+    if (el.id.endsWith('Preview')) el.innerHTML = '';
+    if (el.classList.contains('file-upload-box')) el.classList.remove('has-file');
+  });
   showToast('🔄 Form direset');
 }
 
@@ -735,7 +963,7 @@ async function loadData() {
     allData = json.data || [];
     renderData();
   } catch (e) {
-    document.getElementById('tableData').innerHTML = `<tr><td colspan="7" class="text-center py-10 text-red-500">❌ ${e.message}</td></tr>`;
+    document.getElementById('tableData').innerHTML = `<tr><td colspan="8" class="text-center py-10 text-red-500">❌ ${e.message}</td></tr>`;
   }
 }
 
@@ -752,12 +980,13 @@ function renderData() {
   
   const tbody = document.getElementById('tableData');
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-10 text-gray-500">Tidak ada data</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="text-center py-10 text-gray-500">Tidak ada data</td></tr>';
     return;
   }
   
   tbody.innerHTML = filtered.map((d, i) => {
     const tanggal = d.tanggal ? new Date(d.tanggal).toLocaleDateString('id-ID') : '-';
+    const docCount = [d.fileNIB, d.fileNPWP, d.fileKTP, d.fileNPPBKC, d.filePakta, d.fileSuratPenunjukan, d.fileSertifikat].filter(f => f).length;
     return `
     <tr class="hover:bg-gray-50">
       <td class="px-3 py-3">${i+1}</td>
@@ -766,6 +995,7 @@ function renderData() {
       <td class="px-3 py-3 font-mono text-xs">${d.noPermohonan}</td>
       <td class="px-3 py-3">${d.namaUsaha}</td>
       <td class="px-3 py-3"><span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-semibold">${d.golongan}</span></td>
+      <td class="px-3 py-3 text-center"><span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">📎 ${docCount} file</span></td>
       <td class="px-3 py-3 text-center">
         <button onclick='viewDetail(${JSON.stringify(d)})' class="text-emerald-600 hover:underline text-xs">👁️ Lihat / Cetak</button>
       </td>
@@ -773,32 +1003,53 @@ function renderData() {
   }).join('');
 }
 
-async function loadStats() {
-  try {
-    const res = await fetch(API_URL + "?action=read");
-    const json = await res.json();
-    if (!json.success) return;
-    allData = json.data || [];
-    
-    const total = allData.length;
-    const pengecer = allData.filter(d => d.jenis === 'Pengecer').length;
-    const restoran = allData.filter(d => d.jenis === 'Restoran/Bar/Hotel').length;
-    const tahunIni = allData.filter(d => {
-      const tahun = new Date(d.tanggal).getFullYear();
-      return tahun === new Date().getFullYear();
-    }).length;
-    
-    document.getElementById('statTotal').textContent = total;
-    document.getElementById('statPengecer').textContent = pengecer;
-    document.getElementById('statRestoran').textContent = restoran;
-    document.getElementById('statTahunIni').textContent = tahunIni;
-  } catch (e) {
-    console.error(e);
-  }
-}
-
 function viewDetail(d) {
-  document.getElementById('detailContent').innerHTML = generateBAPLHTML(d, false);
+  const docFiles = [];
+  if (d.fileNIB) docFiles.push({ name: 'NIB', fileId: d.fileNIB });
+  if (d.fileNPWP) docFiles.push({ name: 'NPWP', fileId: d.fileNPWP });
+  if (d.fileKTP) docFiles.push({ name: 'KTP/KITAS', fileId: d.fileKTP });
+  if (d.fileNPPBKC) docFiles.push({ name: 'NPPBKC', fileId: d.fileNPPBKC });
+  if (d.filePakta) docFiles.push({ name: 'Pakta Integritas', fileId: d.filePakta });
+  if (d.fileSuratPenunjukan) docFiles.push({ name: 'Surat Penunjukan', fileId: d.fileSuratPenunjukan });
+  if (d.fileSertifikat) docFiles.push({ name: 'Sertifikat/Izin', fileId: d.fileSertifikat });
+  
+  let docHTML = '';
+  if (docFiles.length > 0) {
+    docHTML = `
+      <div class="mt-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+        <h4 class="font-bold text-yellow-900 mb-2">📎 Dokumen Terlampir (${docFiles.length} file)</h4>
+        <div class="space-y-2">
+          ${docFiles.map(doc => `
+            <div class="flex items-center justify-between bg-white p-2 rounded border">
+              <span class="text-sm">📄 ${doc.name}</span>
+              <div class="flex gap-2">
+                <a href="https://drive.google.com/file/d/${doc.fileId}/view" target="_blank" class="text-xs text-blue-600 hover:underline">👁️ Lihat</a>
+                <a href="https://drive.google.com/uc?id=${doc.fileId}&export=download" target="_blank" class="text-xs text-green-600 hover:underline">️ Download</a>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+  
+  document.getElementById('detailContent').innerHTML = `
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div><p class="text-gray-500 text-xs">No Permohonan</p><p class="font-bold">${d.noPermohonan}</p></div>
+        <div><p class="text-gray-500 text-xs">Tanggal</p><p>${d.tanggal ? new Date(d.tanggal).toLocaleDateString('id-ID') : '-'}</p></div>
+        <div class="col-span-2"><p class="text-gray-500 text-xs">Nama Perusahaan</p><p class="font-bold">${d.namaPerusahaan}</p></div>
+        <div><p class="text-gray-500 text-xs">Nama Usaha</p><p class="font-semibold">${d.namaUsaha}</p></div>
+        <div><p class="text-gray-500 text-xs">Golongan</p><p class="font-semibold">${d.golongan}</p></div>
+        <div class="col-span-2"><p class="text-gray-500 text-xs">Alamat Usaha</p><p>${d.lokasiUsaha}</p></div>
+        <div><p class="text-gray-500 text-xs">Penanggung Jawab</p><p>${d.penanggungJawab}</p></div>
+        <div><p class="text-gray-500 text-xs">Kontak</p><p>${d.telp} / ${d.email}</p></div>
+      </div>
+      ${docHTML}
+      <div class="flex justify-end gap-2 pt-3 border-t">
+        <button onclick="closeModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-100 text-sm">Tutup</button>
+        <button onclick='printBAPL(${JSON.stringify(d)})' class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 text-sm">🖨️ Cetak BAPL</button>
+      </div>
+    </div>`;
   document.getElementById('modalDetail').dataset.currentData = JSON.stringify(d);
   document.getElementById('modalDetail').classList.remove('hidden');
 }
@@ -807,35 +1058,43 @@ function closeModal() {
   document.getElementById('modalDetail').classList.add('hidden');
 }
 
-function printBAPL() {
-  const dataStr = document.getElementById('modalDetail').dataset.currentData;
+function printBAPL(d) {
+  const dataStr = d ? JSON.stringify(d) : document.getElementById('modalDetail').dataset.currentData;
   if (!dataStr) return;
-  const d = JSON.parse(dataStr);
-  const html = generateBAPLHTML(d, true);
+  const data = JSON.parse(dataStr);
+  // Generate HTML untuk print (sama seperti sebelumnya, tambah bagian dokumen)
+  const html = generateBAPLHTML(data);
   document.getElementById('printArea').innerHTML = html;
   window.print();
 }
 
-function generateBAPLHTML(d, forPrint) {
+function generateBAPLHTML(d) {
   const tanggal = d.tanggal ? new Date(d.tanggal).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) : '-';
   const isPengecer = d.jenis === 'Pengecer';
   
+  // Build daftar dokumen dengan link
+  const docList = [];
+  if (d.fileNIB) docList.push(`a. NIB: <a href="https://drive.google.com/file/d/${d.fileNIB}/view" target="_blank">[Lihat File]</a>`);
+  if (!isPengecer && d.fileSertifikat) docList.push(`b. Sertifikat Standar/Izin: <a href="https://drive.google.com/file/d/${d.fileSertifikat}/view" target="_blank">[Lihat File]</a>`);
+  if (d.fileNPWP) docList.push(`NPWP Penanggung Jawab: <a href="https://drive.google.com/file/d/${d.fileNPWP}/view" target="_blank">[Lihat File]</a>`);
+  if (d.fileKTP) docList.push(`KTP/KITAS Penanggung Jawab: <a href="https://drive.google.com/file/d/${d.fileKTP}/view" target="_blank">[Lihat File]</a>`);
+  if (d.fileNPPBKC) docList.push(`NPPBKC: <a href="https://drive.google.com/file/d/${d.fileNPPBKC}/view" target="_blank">[Lihat File]</a>`);
+  if (d.filePakta) docList.push(`Pakta Integritas: <a href="https://drive.google.com/file/d/${d.filePakta}/view" target="_blank">[Lihat File]</a>`);
+  if (d.fileSuratPenunjukan) docList.push(`Surat Penunjukan: <a href="https://drive.google.com/file/d/${d.fileSuratPenunjukan}/view" target="_blank">[Lihat File]</a>`);
+  
   return `
-    <div style="font-family: 'Times New Roman', Times, serif; font-size: 11pt; ${forPrint ? '' : 'max-height: 80vh; overflow-y: auto;'}">
+    <div style="font-family: 'Times New Roman', Times, serif; font-size: 11pt;">
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
         <tr>
           <td style="width: 50%; text-align: center; border-right: 2px solid #000; padding: 10px;">
             <div style="font-weight: bold; font-size: 12pt;">PEMERINTAH KABUPATEN BADUNG</div>
-            <div style="font-size: 11pt; margin-top: 5px;">DINAS KOPERASI, USAHA KECIL MENENGAH DAN PERDAGANGAN</div>
-            <div style="font-size: 10pt; margin-top: 5px;">GEDUNG UNIT 10 (LANTAI 1, 2)</div>
-            <div style="font-size: 10pt;">PUSAT PEMERINTAHAN MANGUPURA MANDALA</div>
+            <div style="font-size: 11pt;">DINAS KOPERASI, USAHA KECIL MENENGAH DAN PERDAGANGAN</div>
             <div style="font-size: 10pt; margin-top: 5px;">JALAN RAYA SEMPIDI, MENGWI, BADUNG, BALI</div>
             <div style="font-size: 10pt;">TELP (0361) 9009403, FAX (0361) 9009405</div>
-            <div style="font-size: 10pt;">KODE POS 80351</div>
-            <div style="font-size: 10pt; margin-top: 5px;">Website: diskopukmp.badungkab.go.id</div>
+            <div style="font-size: 10pt;">Website: diskopukmp.badungkab.go.id</div>
           </td>
-          <td style="width: 50%; text-align: center; padding: 10px; vertical-align: top;">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" style="width: 100px; height: 100px; opacity: 0.3;" alt="Logo"/>
+          <td style="width: 50%; text-align: center; padding: 10px;">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" style="width: 100px; height: 100px; opacity: 0.3;"/>
           </td>
         </tr>
       </table>
@@ -887,13 +1146,7 @@ function generateBAPLHTML(d, forPrint) {
             <td style="border: 1px solid #000; padding: 8px;">1</td>
             <td style="border: 1px solid #000; padding: 8px;">
               <strong>Data Persyaratan Teknis - Perizinan Berusaha</strong><br/>
-              a. NIB<br/>
-              ${isPengecer ? '' : 'b. Sertifikat Standar/Izin<br/>'}
-              NPWP Penanggung Jawab<br/>
-              KTP/KITAS Penanggung Jawab<br/>
-              NPPBKC<br/>
-              Pakta Integritas dan Pernyataan Pengelolaan Sampah<br/>
-              ${isPengecer ? 'Surat Penunjukan dari distributor/subdistributor sebagai pengecer' : 'Surat Penunjukan dari distributor/subdistributor sebagai penjual langsung'}
+              ${docList.join('<br/>')}
             </td>
             <td style="border: 1px solid #000; padding: 8px; text-align: center;">✓</td>
             <td style="border: 1px solid #000; padding: 8px;"></td>
@@ -932,12 +1185,12 @@ function generateBAPLHTML(d, forPrint) {
       
       <table style="width: 100%; margin-top: 40px; font-size: 11pt;">
         <tr>
-          <td style="width: 50%; text-align: center; vertical-align: top;">
+          <td style="width: 50%; text-align: center;">
             <p><strong>Pelaku Usaha</strong></p>
-            <br/><br/><br/><br/>
+            <br/><br/><br/>
             <p style="border-bottom: 1px solid #000; display: inline-block; padding-bottom: 5px; min-width: 200px;">(${d.penanggungJawab})</p>
           </td>
-          <td style="width: 50%; text-align: center; vertical-align: top;">
+          <td style="width: 50%; text-align: center;">
             <p><strong>Yang Bertugas:</strong></p>
             <ol style="text-align: left; display: inline-block;">
               <li>_________________________</li>
@@ -955,14 +1208,14 @@ function generateBAPLHTML(d, forPrint) {
       
       <table style="width: 100%; margin-top: 30px; font-size: 11pt;">
         <tr>
-          <td style="width: 50%; text-align: center; vertical-align: top;">
+          <td style="width: 50%; text-align: center;">
             <p><strong>Kepala Bidang Perdagangan</strong></p>
             <br/><br/><br/>
             <p style="font-weight: bold; text-decoration: underline;">I Ketut Antara, SH., MAP.</p>
             <p>Penata Tk. I (III/d)</p>
             <p>NIP. 197712262009011009</p>
           </td>
-          <td style="width: 50%; text-align: center; vertical-align: top;">
+          <td style="width: 50%; text-align: center;">
             <p><strong>Kepala Dinas Koperasi, UKM dan Perdagangan<br/>Kabupaten Badung</strong></p>
             <br/><br/><br/>
             <p style="font-weight: bold; text-decoration: underline;">Anak Agung Sagung Rosyawati, SE., MM</p>
