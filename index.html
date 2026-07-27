@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BAPL - Diskop UKM Perdagangan Badung</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; }
+  .loader { border-top-color: #059669; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .view { display: none; }
+  .view.active { display: block; }
+  .nav-btn.active { background: white; color: #059669; }
+  @media print {
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px; }
+    .no-print { display: none !important; }
+  }
+</style>
+</head>
+<body class="bg-gray-50">
+
+<!-- HEADER -->
+<header class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white shadow-lg no-print">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">🏛️ BAPL - Kabupaten Badung</h1>
+        <p class="text-emerald-100 text-sm">Berita Acara Penelitian Lapangan</p>
+        <p class="text-xs text-emerald-200 mt-1">Dinas Koperasi, UKM dan Perdagangan</p>
+      </div>
+      <nav class="mt-3 md:mt-0 flex gap-2 bg-emerald-900/30 rounded-lg p-1 flex-wrap">
+        <button onclick="showView('home')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">🏠 Beranda</button>
+        <button onclick="showView('formPengecer')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20"> Form Pengecer</button>
+        <button onclick="showView('formRestoran')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">️ Form Restoran/Bar</button>
+        <button onclick="showView('data')" class="nav-btn px-4 py-2 rounded text-sm font-medium text-white hover:bg-white/20">📊 Data</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- VIEW: HOME -->
+<section id="viewHome" class="view active">
+  <div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <div class="text-6xl mb-4">🏛️</div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Sistem BAPL Online</h2>
+        <p class="text-gray-600">Dinas Koperasi, Usaha Kecil Menengah dan Perdagangan Kabupaten Badung</p>
+        <p class="text-sm text-gray-500 mt-2">Gedung Unit 10 (Lantai 1,2) Pusat Pemerintahan Mangupura Mandala<br/>Jalan Raya Sempidi, Mengwi, Badung, Bali</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-600 hover:shadow-xl transition cursor-pointer" onclick="showView('formPengecer')">
+          <div class="text-4xl mb-3"></div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Form Pengecer</h3>
+          <p class="text-sm text-gray-600">Untuk Supermarket, Hipermarket, dan Pengecer Khusus yang menjual minuman beralkohol Golongan A, B, C</p>
+          <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">Input Data</button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-600 hover:shadow-xl transition cursor-pointer" onclick="showView('formRestoran')">
+          <div class="text-4xl mb-3">🍽️</div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Form Restoran/Bar/Hotel</h3>
+          <p class="text-sm text-gray-600">Untuk Restoran, Bar, Hotel Bintang, dan Hotel Melati yang menjual minuman beralkohol Golongan A, B, C</p>
+          <button class="mt-4 w-full bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 font-semibold">Input Data</button>
+        </div>
+      </div>
+
+      <div class="mt-8 bg-white rounded-xl shadow p-6">
+        <h3 class="font-bold text-lg mb-4">📋 Statistik Data</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <p class="text-3xl font-bold text-blue-700" id="statTotal">0</p>
+            <p class="text-sm text-gray-600">Total Data</p>
+          </div>
+          <div class="bg-emerald-50 p-4 rounded-lg">
+            <p class="text-3xl font-bold text-emerald-700" id="statPengecer">0</p>
+            <p class="text-sm text-gray-600">Pengecer</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <p class="text-3xl font-bold text-purple-700" id="statRestoran">0</p>
+            <p class="text-sm text-gray-600">Restoran/Bar</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <p class="text-3xl font-bold text-yellow-700" id="statTahunIni">0</p>
+            <p class="text-sm text-gray-600">Tahun Ini</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW: FORM PENGEcer -->
+<section id="viewFormPengecer" class="view">
+  <div class="container mx-auto px-4 py-6 max-w-5xl">
+    <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-600">
+      <div class="mb-6 border-b pb-3">
+        <h2 class="text-2xl font-bold text-blue-800">🏪 Form Pengecer (Supermarket/Hipermarket)</h2>
+        <p class="text-sm text-gray-600 mt-1">Berita Acara Penelitian Lapangan - Penjualan Minuman Beralkohol</p>
+      </div>
+
+      <form id="formPengecer" class="space-y-6">
+        <input type="hidden" id="pengecerId"/>
+        
+        <!-- Info Usaha -->
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <h3 class="font-bold text-blue-900 mb-3">📋 Informasi Perusahaan/Usaha</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Nama Perusahaan *</label>
+              <input id="pengecerNamaPerusahaan" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Nomor Permohonan *</label>
+              <input id="pengecerNoPermohonan" required placeholder="Contoh: 123/2026" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Status Permohonan *</label>
+              <select id="pengecerStatus" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Baru</option>
+                <option>Perubahan</option>
+                <option>Perpanjangan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Bentuk Usaha *</label>
+              <select id="pengecerBentukUsaha" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Perseroan Terbatas (PT)</option>
+                <option>Persekutuan Komanditer (CV)</option>
+                <option>Koperasi</option>
+                <option>Perorangan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Golongan SKP Minuman Beralkohol *</label>
+              <select id="pengecerGolongan" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Golongan A</option>
+                <option>Golongan B</option>
+                <option>Golongan C</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Alamat Perusahaan *</label>
+              <textarea id="pengecerAlamat" required rows="2" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Nomor Telepon</label>
+              <input id="pengecerTelp" placeholder="0361-xxxxxxx" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Email</label>
+              <input id="pengecerEmail" type="email" placeholder="email@example.com" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">NPWP Perusahaan</label>
+              <input id="pengecerNPWP" placeholder="00.000.000.0-000.000" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">BPJS Ketenagakerjaan & Kesehatan</label>
+              <input id="pengecerBPJS" placeholder="Nomor BPJS" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Usaha/Outlet -->
+        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+          <h3 class="font-bold text-emerald-900 mb-3">🏪 Informasi Usaha/Outlet</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold mb-1">Kegiatan Usaha *</label>
+              <select id="pengecerKegiatan" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Supermarket</option>
+                <option>Hipermarket</option>
+                <option>Pengecer Khusus</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Nama Usaha/Outlet/Gerai *</label>
+              <input id="pengecerNamaUsaha" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Lokasi/Alamat Usaha *</label>
+              <textarea id="pengecerLokasiUsaha" required rows="2" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Nama Penanggung Jawab *</label>
+              <input id="pengecerPenanggungJawab" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jenis Minuman Beralkohol -->
+        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+          <h3 class="font-bold text-purple-900 mb-3">🍷 Jenis Minuman Beralkohol yang Dijual</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-semibold mb-2">Golongan A (Kadar alkohol 1-5%)</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA1" value="Shandy" class="rounded"/> <span>Shandy</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA2" value="Minuman Ringan Beralkohol" class="rounded"/> <span>Minuman Ringan Beralkohol</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA3" value="Bir/Beer" class="rounded"/> <span>Bir/Beer</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA4" value="Lager" class="rounded"/> <span>Lager</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA5" value="Ale" class="rounded"/> <span>Ale</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA6" value="Bir Hitam/Stout" class="rounded"/> <span>Bir Hitam/Stout</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA7" value="Low Alkohol Wine" class="rounded"/> <span>Low Alkohol Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA8" value="Minuman Beralkohol Berkarbonasi" class="rounded"/> <span>Minuman Beralkohol Berkarbonasi</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerA9" value="Anggur Brem Bali" class="rounded"/> <span>Anggur Brem Bali</span></label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2">Golongan B (Kadar alkohol 5-20%)</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB1" value="Reduced Alcohol Wine" class="rounded"/> <span>Reduced Alcohol Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB2" value="Anggur/Wine" class="rounded"/> <span>Anggur/Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB3" value="Sparkling Wine/Champagne" class="rounded"/> <span>Sparkling Wine/Champagne</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB4" value="Carbonated Wine" class="rounded"/> <span>Carbonated Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB5" value="Koktail Anggur/Wine Cocktail" class="rounded"/> <span>Koktail Anggur/Wine Cocktail</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB6" value="Anggur Tonikum Kinina/Quinine" class="rounded"/> <span>Anggur Tonikum Kinina/Quinine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB7" value="Tonic Wine" class="rounded"/> <span>Tonic Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB8" value="Meat Wine/Beef Wine" class="rounded"/> <span>Meat Wine/Beef Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB9" value="Malt Wine/Anggur Buah" class="rounded"/> <span>Malt Wine/Anggur Buah</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB10" value="Anggur Buah Apel/Cider" class="rounded"/> <span>Anggur Buah Apel/Cider</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB11" value="Anggur Sari Buah Pir/Perry" class="rounded"/> <span>Anggur Sari Buah Pir/Perry</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB12" value="Anggur Beras/Sake/Rice Wine/Soju" class="rounded"/> <span>Anggur Beras/Sake/Rice Wine/Soju</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB13" value="Anggur Sari Sayuran/Vegetable Wine" class="rounded"/> <span>Anggur Sari Sayuran</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB14" value="Honey Wine/Mead" class="rounded"/> <span>Honey Wine/Mead</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB15" value="Minuman Beralkohol Beraroma" class="rounded"/> <span>Minuman Beralkohol Beraroma</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB16" value="Beras Kencur" class="rounded"/> <span>Beras Kencur</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerB17" value="Anggur Ginseng/Vermouth" class="rounded"/> <span>Anggur Ginseng/Vermouth</span></label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2">Golongan C (Kadar alkohol 20-55%)</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC1" value="Brendi/Brandy" class="rounded"/> <span>Brendi/Brandy</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC2" value="Brendi Buah/Fruit Brandy" class="rounded"/> <span>Brendi Buah/Fruit Brandy</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC3" value="Wiski/Whiskies" class="rounded"/> <span>Wiski/Whiskies</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC4" value="Rum" class="rounded"/> <span>Rum</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC5" value="Gin" class="rounded"/> <span>Gin</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC6" value="Geneva" class="rounded"/> <span>Geneva</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC7" value="Vodka" class="rounded"/> <span>Vodka</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC8" value="Sopi Manis/Liqueurs" class="rounded"/> <span>Sopi Manis/Liqueurs</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC9" value="Cordial/Cordials" class="rounded"/> <span>Cordial/Cordials</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC10" value="Samsu/Medicated" class="rounded"/> <span>Samsu/Medicated</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC11" value="Samsu" class="rounded"/> <span>Samsu</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC12" value="Arak/Arrack" class="rounded"/> <span>Arak/Arrack</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC13" value="Cognac" class="rounded"/> <span>Cognac</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC14" value="Tequila" class="rounded"/> <span>Tequila</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="pengecerC15" value="Aperitif" class="rounded"/> <span>Aperitif</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Persyaratan Dokumen -->
+        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+          <h3 class="font-bold text-yellow-900 mb-3">📄 Persyaratan Dokumen</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc1" class="rounded"/> <span>NIB (Nomor Induk Berusaha)</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc2" class="rounded"/> <span>NPWP Penanggung Jawab</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc3" class="rounded"/> <span>KTP/KITAS Penanggung Jawab</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc4" class="rounded"/> <span>NPPBKC</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc5" class="rounded"/> <span>Pakta Integritas dan Pernyataan Pengelolaan Sampah</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="pengecerDoc6" class="rounded"/> <span>Surat Penunjukan dari Distributor/Subdistributor</span></label>
+          </div>
+        </div>
+
+        <!-- Keterangan Jarak -->
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <h3 class="font-bold text-gray-900 mb-3">📍 Keterangan Jarak dengan Lokasi Sekitar</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-semibold mb-1">Jarak ke Tempat Ibadah (meter)</label>
+              <input id="pengecerJarakIbadah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Jarak ke Sekolah (meter)</label>
+              <input id="pengecerJarakSekolah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Jarak ke Rumah Sakit (meter)</label>
+              <input id="pengecerJarakRS" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t">
+          <button type="button" onclick="resetForm('pengecer')" class="px-4 py-2 border rounded-lg hover:bg-gray-100">🔄 Reset</button>
+          <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">💾 Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW: FORM RESTORAN/BAR -->
+<section id="viewFormRestoran" class="view">
+  <div class="container mx-auto px-4 py-6 max-w-5xl">
+    <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-emerald-600">
+      <div class="mb-6 border-b pb-3">
+        <h2 class="text-2xl font-bold text-emerald-800">🍽️ Form Restoran/Bar/Hotel</h2>
+        <p class="text-sm text-gray-600 mt-1">Berita Acara Penelitian Lapangan - Penjualan Minuman Beralkohol</p>
+      </div>
+
+      <form id="formRestoran" class="space-y-6">
+        <input type="hidden" id="restoranId"/>
+        
+        <!-- Info Usaha -->
+        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+          <h3 class="font-bold text-emerald-900 mb-3"> Informasi Perusahaan/Usaha</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Nama Perusahaan *</label>
+              <input id="restoranNamaPerusahaan" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Nomor Permohonan *</label>
+              <input id="restoranNoPermohonan" required placeholder="Contoh: 123/2026" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Status Permohonan *</label>
+              <select id="restoranStatus" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Baru</option>
+                <option>Perubahan</option>
+                <option>Perpanjangan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Bentuk Usaha *</label>
+              <select id="restoranBentukUsaha" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Perseroan Terbatas (PT)</option>
+                <option>Persekutuan Komanditer (CV)</option>
+                <option>Koperasi</option>
+                <option>Perorangan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Golongan SKPL Minuman Beralkohol *</label>
+              <select id="restoranGolongan" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Golongan A</option>
+                <option>Golongan B</option>
+                <option>Golongan C</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Alamat Perusahaan *</label>
+              <textarea id="restoranAlamat" required rows="2" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Nomor Telepon</label>
+              <input id="restoranTelp" placeholder="0361-xxxxxxx" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Email</label>
+              <input id="restoranEmail" type="email" placeholder="email@example.com" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">NPWP Perusahaan</label>
+              <input id="restoranNPWP" placeholder="00.000.000.0-000.000" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">BPJS Ketenagakerjaan & Kesehatan</label>
+              <input id="restoranBPJS" placeholder="Nomor BPJS" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Usaha/Outlet -->
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <h3 class="font-bold text-blue-900 mb-3"> Informasi Usaha/Outlet</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold mb-1">Kegiatan Usaha *</label>
+              <select id="restoranKegiatan" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="">-- Pilih --</option>
+                <option>Restoran (56101)</option>
+                <option>Bar (56301)</option>
+                <option>Hotel Bintang (55110)</option>
+                <option>Hotel Melati (55120)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Nama Usaha/Outlet/Gerai *</label>
+              <input id="restoranNamaUsaha" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Lokasi/Alamat Usaha *</label>
+              <textarea id="restoranLokasiUsaha" required rows="2" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-1">Nama Penanggung Jawab *</label>
+              <input id="restoranPenanggungJawab" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jenis Minuman Beralkohol -->
+        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+          <h3 class="font-bold text-purple-900 mb-3">🍷 Jenis Minuman Beralkohol yang Dijual</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-semibold mb-2">Golongan A (Kadar alkohol 1-5%)</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA1" value="Shandy" class="rounded"/> <span>Shandy</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA2" value="Minuman Ringan Beralkohol" class="rounded"/> <span>Minuman Ringan Beralkohol</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA3" value="Bir/Beer" class="rounded"/> <span>Bir/Beer</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA4" value="Lager" class="rounded"/> <span>Lager</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA5" value="Ale" class="rounded"/> <span>Ale</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA6" value="Bir Hitam/Stout" class="rounded"/> <span>Bir Hitam/Stout</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA7" value="Low Alkohol Wine" class="rounded"/> <span>Low Alkohol Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA8" value="Minuman Beralkohol Berkarbonasi" class="rounded"/> <span>Minuman Beralkohol Berkarbonasi</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranA9" value="Anggur Brem Bali" class="rounded"/> <span>Anggur Brem Bali</span></label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2">Golongan B (Kadar alkohol 5-20%)</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB1" value="Reduced Alcohol Wine" class="rounded"/> <span>Reduced Alcohol Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB2" value="Anggur/Wine" class="rounded"/> <span>Anggur/Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB3" value="Sparkling Wine/Champagne" class="rounded"/> <span>Sparkling Wine/Champagne</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB4" value="Carbonated Wine" class="rounded"/> <span>Carbonated Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB5" value="Koktail Anggur/Wine Cocktail" class="rounded"/> <span>Koktail Anggur/Wine Cocktail</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB6" value="Anggur Tonikum Kinina/Quinine" class="rounded"/> <span>Anggur Tonikum Kinina</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB7" value="Tonic Wine" class="rounded"/> <span>Tonic Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB8" value="Meat Wine/Beef Wine" class="rounded"/> <span>Meat Wine/Beef Wine</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB9" value="Malt Wine/Anggur Buah" class="rounded"/> <span>Malt Wine/Anggur Buah</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB10" value="Anggur Buah Apel/Cider" class="rounded"/> <span>Anggur Buah Apel/Cider</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB11" value="Anggur Sari Buah Pir/Perry" class="rounded"/> <span>Anggur Sari Buah Pir/Perry</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB12" value="Anggur Beras/Sake/Rice Wine/Soju" class="rounded"/> <span>Anggur Beras/Sake/Soju</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB13" value="Anggur Sari Sayuran" class="rounded"/> <span>Anggur Sari Sayuran</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB14" value="Honey Wine/Mead" class="rounded"/> <span>Honey Wine/Mead</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB15" value="Beras Kencur" class="rounded"/> <span>Beras Kencur</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranB16" value="Anggur Ginseng/Vermouth" class="rounded"/> <span>Anggur Ginseng/Vermouth</span></label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2">Golongan C (Kadar alkohol 20-55%)</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC1" value="Brendi/Brandy" class="rounded"/> <span>Brendi/Brandy</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC2" value="Brendi Buah/Fruit Brandy" class="rounded"/> <span>Brendi Buah</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC3" value="Wiski/Whiskies" class="rounded"/> <span>Wiski/Whiskies</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC4" value="Rum" class="rounded"/> <span>Rum</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC5" value="Gin" class="rounded"/> <span>Gin</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC6" value="Geneva" class="rounded"/> <span>Geneva</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC7" value="Vodka" class="rounded"/> <span>Vodka</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC8" value="Sopi Manis/Liqueurs" class="rounded"/> <span>Sopi Manis/Liqueurs</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC9" value="Cordial/Cordials" class="rounded"/> <span>Cordial/Cordials</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC10" value="Samsu/Medicated" class="rounded"/> <span>Samsu/Medicated</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC11" value="Samsu" class="rounded"/> <span>Samsu</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC12" value="Arak/Arrack" class="rounded"/> <span>Arak/Arrack</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC13" value="Cognac" class="rounded"/> <span>Cognac</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC14" value="Tequila" class="rounded"/> <span>Tequila</span></label>
+                <label class="flex items-center gap-2"><input type="checkbox" id="restoranC15" value="Aperitif" class="rounded"/> <span>Aperitif</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Persyaratan Dokumen -->
+        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+          <h3 class="font-bold text-yellow-900 mb-3">📄 Persyaratan Dokumen</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc1" class="rounded"/> <span>NIB (Nomor Induk Berusaha)</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc2" class="rounded"/> <span>Sertifikat Standar/Izin</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc3" class="rounded"/> <span>NPWP Penanggung Jawab</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc4" class="rounded"/> <span>KTP/KITAS Penanggung Jawab</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc5" class="rounded"/> <span>NPPBKC</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc6" class="rounded"/> <span>Pakta Integritas dan Pernyataan Pengelolaan Sampah</span></label>
+            <label class="flex items-center gap-3"><input type="checkbox" id="restoranDoc7" class="rounded"/> <span>Surat Penunjukan dari Distributor/Subdistributor</span></label>
+          </div>
+        </div>
+
+        <!-- Keterangan Jarak -->
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <h3 class="font-bold text-gray-900 mb-3">📍 Keterangan Jarak dengan Lokasi Sekitar</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-semibold mb-1">Jarak ke Tempat Ibadah (meter)</label>
+              <input id="restoranJarakIbadah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Jarak ke Sekolah (meter)</label>
+              <input id="restoranJarakSekolah" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-1">Jarak ke Rumah Sakit (meter)</label>
+              <input id="restoranJarakRS" type="number" placeholder="0" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gray-500 outline-none"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t">
+          <button type="button" onclick="resetForm('restoran')" class="px-4 py-2 border rounded-lg hover:bg-gray-100">🔄 Reset</button>
+          <button type="submit" class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-semibold">💾 Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW: DATA -->
+<section id="viewData" class="view">
+  <div class="container mx-auto px-4 py-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">📊 Data BAPL</h2>
+    
+    <div class="bg-white rounded-xl shadow p-4 grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+      <input id="searchData" type="text" placeholder=" Cari Nama/No Permohonan..." class="border rounded-lg px-3 py-2 outline-none md:col-span-2"/>
+      <select id="filterJenis" class="border rounded-lg px-3 py-2 outline-none">
+        <option value="">-- Semua Jenis --</option>
+        <option>Pengecer</option>
+        <option>Restoran/Bar/Hotel</option>
+      </select>
+      <select id="filterGolongan" class="border rounded-lg px-3 py-2 outline-none">
+        <option value="">-- Semua Golongan --</option>
+        <option>Golongan A</option>
+        <option>Golongan B</option>
+        <option>Golongan C</option>
+      </select>
+    </div>
+
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-emerald-700 text-white text-xs uppercase">
+          <tr>
+            <th class="px-3 py-3">No</th>
+            <th class="px-3 py-3">Tanggal</th>
+            <th class="px-3 py-3">Jenis</th>
+            <th class="px-3 py-3">No Permohonan</th>
+            <th class="px-3 py-3">Nama Usaha</th>
+            <th class="px-3 py-3">Golongan</th>
+            <th class="px-3 py-3 text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableData" class="divide-y">
+          <tr><td colspan="7" class="text-center py-10 text-gray-500">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- MODAL DETAIL & PRINT -->
+<div id="modalDetail" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 no-print">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[95vh] overflow-y-auto">
+    <div class="p-5 border-b flex justify-between items-center bg-emerald-50 sticky top-0 z-10">
+      <h2 class="text-xl font-bold text-emerald-900">Detail BAPL</h2>
+      <div class="flex gap-2">
+        <button onclick="printBAPL()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-semibold">🖨️ Cetak</button>
+        <button onclick="closeModal()" class="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+      </div>
+    </div>
+    <div id="detailContent" class="p-5"></div>
+  </div>
+</div>
+
+<div id="printArea" class="hidden"></div>
+
+<!-- FOOTER -->
+<footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300 mt-auto no-print">
+  <div class="container mx-auto px-4 py-4">
+    <div class="text-center text-xs text-gray-500">
+      <p>© <span id="yearFooter"></span> Dinas Koperasi, UKM dan Perdagangan Kabupaten Badung</p>
+      <p>Gedung Unit 10 (Lantai 1,2) Pusat Pemerintahan Mangupura Mandala | Tlp. (0361) 9009403</p>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" class="hidden fixed bottom-5 right-5 px-5 py-3 rounded-lg shadow-lg z-50 text-white no-print"></div>
+
+<script>
+/* ============================================================
+   KONFIGURASI — GANTI URL DI BAWAH DENGAN URL WEB APP ANDA
+   ============================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycbymcqk7mlT7cUAzUdrLtrMdzj8ItKtj7HOU81aDuAn477FbIpsGEdv4RvIycp5nViEX0A/exec";
+/* ============================================================ */
+
+let allData = [];
+
+document.getElementById('yearFooter').textContent = new Date().getFullYear();
+
+document.addEventListener('DOMContentLoaded', () => {
+  showView('home');
+  document.getElementById('formPengecer').addEventListener('submit', submitPengecer);
+  document.getElementById('formRestoran').addEventListener('submit', submitRestoran);
+  document.getElementById('searchData').addEventListener('input', renderData);
+  document.getElementById('filterJenis').addEventListener('change', renderData);
+  document.getElementById('filterGolongan').addEventListener('change', renderData);
+});
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const viewId = 'view' + name.charAt(0).toUpperCase() + name.slice(1);
+  const el = document.getElementById(viewId);
+  if (el) el.classList.add('active');
+  if (name === 'data') loadData();
+  if (name === 'home') loadStats();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getCheckedValues(prefix, count) {
+  const values = [];
+  for (let i = 1; i <= count; i++) {
+    const checkbox = document.getElementById(prefix + i);
+    if (checkbox && checkbox.checked) {
+      values.push(checkbox.value);
+    }
+  }
+  return values.join(', ');
+}
+
+function getDocChecked(prefix) {
+  const docs = [];
+  for (let i = 1; i <= 7; i++) {
+    const checkbox = document.getElementById(prefix + 'Doc' + i);
+    if (checkbox && checkbox.checked) {
+      docs.push('Doc' + i);
+    }
+  }
+  return docs.join(', ');
+}
+
+/* ====== SUBMIT PENGEcer ====== */
+async function submitPengecer(e) {
+  e.preventDefault();
+  
+  const payload = {
+    jenis: 'Pengecer',
+    namaPerusahaan: document.getElementById('pengecerNamaPerusahaan').value.trim(),
+    noPermohonan: document.getElementById('pengecerNoPermohonan').value.trim(),
+    status: document.getElementById('pengecerStatus').value,
+    bentukUsaha: document.getElementById('pengecerBentukUsaha').value,
+    golongan: document.getElementById('pengecerGolongan').value,
+    alamat: document.getElementById('pengecerAlamat').value.trim(),
+    telp: document.getElementById('pengecerTelp').value.trim(),
+    email: document.getElementById('pengecerEmail').value.trim(),
+    npwp: document.getElementById('pengecerNPWP').value.trim(),
+    bpjs: document.getElementById('pengecerBPJS').value.trim(),
+    kegiatan: document.getElementById('pengecerKegiatan').value,
+    namaUsaha: document.getElementById('pengecerNamaUsaha').value.trim(),
+    lokasiUsaha: document.getElementById('pengecerLokasiUsaha').value.trim(),
+    penanggungJawab: document.getElementById('pengecerPenanggungJawab').value.trim(),
+    minumanA: getCheckedValues('pengecerA', 9),
+    minumanB: getCheckedValues('pengecerB', 17),
+    minumanC: getCheckedValues('pengecerC', 15),
+    dokumen: getDocChecked('pengecer'),
+    jarakIbadah: document.getElementById('pengecerJarakIbadah').value,
+    jarakSekolah: document.getElementById('pengecerJarakSekolah').value,
+    jarakRS: document.getElementById('pengecerJarakRS').value,
+    tanggal: new Date().toISOString()
+  };
+  
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'createPengecer', data: payload })
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    showToast('✅ Data Pengecer berhasil disimpan!');
+    resetForm('pengecer');
+    showView('home');
+  } catch (err) { showToast('❌ ' + err.message, true); }
+}
+
+/* ====== SUBMIT RESTORAN ====== */
+async function submitRestoran(e) {
+  e.preventDefault();
+  
+  const payload = {
+    jenis: 'Restoran/Bar/Hotel',
+    namaPerusahaan: document.getElementById('restoranNamaPerusahaan').value.trim(),
+    noPermohonan: document.getElementById('restoranNoPermohonan').value.trim(),
+    status: document.getElementById('restoranStatus').value,
+    bentukUsaha: document.getElementById('restoranBentukUsaha').value,
+    golongan: document.getElementById('restoranGolongan').value,
+    alamat: document.getElementById('restoranAlamat').value.trim(),
+    telp: document.getElementById('restoranTelp').value.trim(),
+    email: document.getElementById('restoranEmail').value.trim(),
+    npwp: document.getElementById('restoranNPWP').value.trim(),
+    bpjs: document.getElementById('restoranBPJS').value.trim(),
+    kegiatan: document.getElementById('restoranKegiatan').value,
+    namaUsaha: document.getElementById('restoranNamaUsaha').value.trim(),
+    lokasiUsaha: document.getElementById('restoranLokasiUsaha').value.trim(),
+    penanggungJawab: document.getElementById('restoranPenanggungJawab').value.trim(),
+    minumanA: getCheckedValues('restoranA', 9),
+    minumanB: getCheckedValues('restoranB', 16),
+    minumanC: getCheckedValues('restoranC', 15),
+    dokumen: getDocChecked('restoran'),
+    jarakIbadah: document.getElementById('restoranJarakIbadah').value,
+    jarakSekolah: document.getElementById('restoranJarakSekolah').value,
+    jarakRS: document.getElementById('restoranJarakRS').value,
+    tanggal: new Date().toISOString()
+  };
+  
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'createRestoran', data: payload })
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    showToast('✅ Data Restoran/Bar/Hotel berhasil disimpan!');
+    resetForm('restoran');
+    showView('home');
+  } catch (err) { showToast('❌ ' + err.message, true); }
+}
+
+function resetForm(type) {
+  document.getElementById('form' + type.charAt(0).toUpperCase() + type.slice(1)).reset();
+  showToast('🔄 Form direset');
+}
+
+/* ====== LOAD DATA ====== */
+async function loadData() {
+  try {
+    const res = await fetch(API_URL + "?action=read");
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    allData = json.data || [];
+    renderData();
+  } catch (e) {
+    document.getElementById('tableData').innerHTML = `<tr><td colspan="7" class="text-center py-10 text-red-500">❌ ${e.message}</td></tr>`;
+  }
+}
+
+function renderData() {
+  const q = document.getElementById('searchData').value.toLowerCase();
+  const fJ = document.getElementById('filterJenis').value;
+  const fG = document.getElementById('filterGolongan').value;
+  
+  const filtered = allData.filter(d =>
+    (!q || (d.namaUsaha + d.noPermohonan).toLowerCase().includes(q)) &&
+    (!fJ || d.jenis === fJ) &&
+    (!fG || d.golongan === fG)
+  );
+  
+  const tbody = document.getElementById('tableData');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-10 text-gray-500">Tidak ada data</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = filtered.map((d, i) => {
+    const tanggal = d.tanggal ? new Date(d.tanggal).toLocaleDateString('id-ID') : '-';
+    return `
+    <tr class="hover:bg-gray-50">
+      <td class="px-3 py-3">${i+1}</td>
+      <td class="px-3 py-3">${tanggal}</td>
+      <td class="px-3 py-3"><span class="${d.jenis === 'Pengecer' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'} px-2 py-1 rounded text-xs font-semibold">${d.jenis}</span></td>
+      <td class="px-3 py-3 font-mono text-xs">${d.noPermohonan}</td>
+      <td class="px-3 py-3">${d.namaUsaha}</td>
+      <td class="px-3 py-3"><span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-semibold">${d.golongan}</span></td>
+      <td class="px-3 py-3 text-center">
+        <button onclick='viewDetail(${JSON.stringify(d)})' class="text-emerald-600 hover:underline text-xs">👁️ Lihat / Cetak</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function loadStats() {
+  try {
+    const res = await fetch(API_URL + "?action=read");
+    const json = await res.json();
+    if (!json.success) return;
+    allData = json.data || [];
+    
+    const total = allData.length;
+    const pengecer = allData.filter(d => d.jenis === 'Pengecer').length;
+    const restoran = allData.filter(d => d.jenis === 'Restoran/Bar/Hotel').length;
+    const tahunIni = allData.filter(d => {
+      const tahun = new Date(d.tanggal).getFullYear();
+      return tahun === new Date().getFullYear();
+    }).length;
+    
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statPengecer').textContent = pengecer;
+    document.getElementById('statRestoran').textContent = restoran;
+    document.getElementById('statTahunIni').textContent = tahunIni;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function viewDetail(d) {
+  document.getElementById('detailContent').innerHTML = generateBAPLHTML(d, false);
+  document.getElementById('modalDetail').dataset.currentData = JSON.stringify(d);
+  document.getElementById('modalDetail').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('modalDetail').classList.add('hidden');
+}
+
+function printBAPL() {
+  const dataStr = document.getElementById('modalDetail').dataset.currentData;
+  if (!dataStr) return;
+  const d = JSON.parse(dataStr);
+  const html = generateBAPLHTML(d, true);
+  document.getElementById('printArea').innerHTML = html;
+  window.print();
+}
+
+function generateBAPLHTML(d, forPrint) {
+  const tanggal = d.tanggal ? new Date(d.tanggal).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}) : '-';
+  const isPengecer = d.jenis === 'Pengecer';
+  
+  return `
+    <div style="font-family: 'Times New Roman', Times, serif; font-size: 11pt; ${forPrint ? '' : 'max-height: 80vh; overflow-y: auto;'}">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+          <td style="width: 50%; text-align: center; border-right: 2px solid #000; padding: 10px;">
+            <div style="font-weight: bold; font-size: 12pt;">PEMERINTAH KABUPATEN BADUNG</div>
+            <div style="font-size: 11pt; margin-top: 5px;">DINAS KOPERASI, USAHA KECIL MENENGAH DAN PERDAGANGAN</div>
+            <div style="font-size: 10pt; margin-top: 5px;">GEDUNG UNIT 10 (LANTAI 1, 2)</div>
+            <div style="font-size: 10pt;">PUSAT PEMERINTAHAN MANGUPURA MANDALA</div>
+            <div style="font-size: 10pt; margin-top: 5px;">JALAN RAYA SEMPIDI, MENGWI, BADUNG, BALI</div>
+            <div style="font-size: 10pt;">TELP (0361) 9009403, FAX (0361) 9009405</div>
+            <div style="font-size: 10pt;">KODE POS 80351</div>
+            <div style="font-size: 10pt; margin-top: 5px;">Website: diskopukmp.badungkab.go.id</div>
+          </td>
+          <td style="width: 50%; text-align: center; padding: 10px; vertical-align: top;">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" style="width: 100px; height: 100px; opacity: 0.3;" alt="Logo"/>
+          </td>
+        </tr>
+      </table>
+      
+      <div style="border-top: 3px double #000; margin: 10px 0;"></div>
+      
+      <div style="text-align: center; margin: 20px 0;">
+        <div style="font-size: 12pt; font-weight: bold; text-decoration: underline;">BERITA ACARA PENELITIAN LAPANGAN</div>
+        <div style="font-size: 11pt; margin-top: 5px;">NOMOR: ${d.noPermohonan}</div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <p>Pada hari ini ${tanggal}</p>
+        <p>Telah dilakukan penelitian lapangan terhadap pelaku usaha yaitu:</p>
+      </div>
+      
+      <table style="width: 100%; margin: 15px 0; font-size: 11pt;">
+        <tr><td style="width: 250px;"><strong>Permohonan ${isPengecer ? 'SKP' : 'SKPL'} Minuman Beralkohol</strong></td><td>: ${d.golongan}</td></tr>
+        <tr><td><strong>Nama Perusahaan</strong></td><td>: ${d.namaPerusahaan}</td></tr>
+        <tr><td><strong>Nomor Permohonan</strong></td><td>: ${d.noPermohonan}</td></tr>
+        <tr><td><strong>Status Permohonan</strong></td><td>: ${d.status}</td></tr>
+        <tr><td><strong>Bentuk Usaha</strong></td><td>: ${d.bentukUsaha}</td></tr>
+        <tr><td><strong>Alamat Perusahaan</strong></td><td>: ${d.alamat}</td></tr>
+        <tr><td><strong>Nomor Telp dan Email</strong></td><td>: ${d.telp || '-'} / ${d.email || '-'}</td></tr>
+        <tr><td><strong>NPWP Perusahaan</strong></td><td>: ${d.npwp || '-'}</td></tr>
+        <tr><td><strong>BPJS Ketenagakerjaan dan Kesehatan</strong></td><td>: ${d.bpjs || '-'}</td></tr>
+        <tr><td><strong>Kegiatan Usaha</strong></td><td>: ${d.kegiatan}</td></tr>
+        <tr><td><strong>Nama Usaha/Outlet/Gerai</strong></td><td>: ${d.namaUsaha}</td></tr>
+        <tr><td><strong>Lokasi/Alamat Usaha</strong></td><td>: ${d.lokasiUsaha}</td></tr>
+        <tr><td><strong>Nama Penanggung Jawab</strong></td><td>: ${d.penanggungJawab}</td></tr>
+      </table>
+      
+      <div style="margin: 20px 0;">
+        <p style="font-weight: bold;">Adapun data persyaratan/dokumen yang dapat diteliti sebagai berikut:</p>
+      </div>
+      
+      <table style="width: 100%; border-collapse: collapse; font-size: 10pt; margin: 15px 0;">
+        <thead>
+          <tr style="background: #f3f4f6;">
+            <th style="border: 1px solid #000; padding: 8px; width: 5%;">No</th>
+            <th style="border: 1px solid #000; padding: 8px; width: 60%;">Uraian</th>
+            <th style="border: 1px solid #000; padding: 8px; width: 15%;">Ada</th>
+            <th style="border: 1px solid #000; padding: 8px; width: 15%;">Tidak Ada</th>
+            <th style="border: 1px solid #000; padding: 8px; width: 5%;">Ket</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #000; padding: 8px;">1</td>
+            <td style="border: 1px solid #000; padding: 8px;">
+              <strong>Data Persyaratan Teknis - Perizinan Berusaha</strong><br/>
+              a. NIB<br/>
+              ${isPengecer ? '' : 'b. Sertifikat Standar/Izin<br/>'}
+              NPWP Penanggung Jawab<br/>
+              KTP/KITAS Penanggung Jawab<br/>
+              NPPBKC<br/>
+              Pakta Integritas dan Pernyataan Pengelolaan Sampah<br/>
+              ${isPengecer ? 'Surat Penunjukan dari distributor/subdistributor sebagai pengecer' : 'Surat Penunjukan dari distributor/subdistributor sebagai penjual langsung'}
+            </td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">✓</td>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 8px;">2</td>
+            <td style="border: 1px solid #000; padding: 8px;">
+              <strong>Dengan jenis Minuman Beralkohol yang dijual:</strong><br/>
+              ${d.minumanA ? '<strong>Golongan A:</strong> ' + d.minumanA + '<br/>' : ''}
+              ${d.minumanB ? '<strong>Golongan B:</strong> ' + d.minumanB + '<br/>' : ''}
+              ${d.minumanC ? '<strong>Golongan C:</strong> ' + d.minumanC + '<br/>' : ''}
+            </td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">✓</td>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 8px;">3</td>
+            <td style="border: 1px solid #000; padding: 8px;">
+              <strong>Keterangan Jarak dengan Lokasi</strong><br/>
+              a. Tempat Ibadah: ${d.jarakIbadah || '-'} meter<br/>
+              b. Sekolah: ${d.jarakSekolah || '-'} meter<br/>
+              c. Rumah Sakit: ${d.jarakRS || '-'} meter
+            </td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">✓</td>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div style="margin: 30px 0;">
+        <p>Demikian Berita Acara Penelitian Lapangan ini dibuat dengan sebenarnya untuk dapat dipergunakan sebagaimana mestinya. Berita Acara Penelitian Lapangan berlaku selama 3 tahun semenjak BAPL diterbitkan.</p>
+      </div>
+      
+      <table style="width: 100%; margin-top: 40px; font-size: 11pt;">
+        <tr>
+          <td style="width: 50%; text-align: center; vertical-align: top;">
+            <p><strong>Pelaku Usaha</strong></p>
+            <br/><br/><br/><br/>
+            <p style="border-bottom: 1px solid #000; display: inline-block; padding-bottom: 5px; min-width: 200px;">(${d.penanggungJawab})</p>
+          </td>
+          <td style="width: 50%; text-align: center; vertical-align: top;">
+            <p><strong>Yang Bertugas:</strong></p>
+            <ol style="text-align: left; display: inline-block;">
+              <li>_________________________</li>
+              <li>_________________________</li>
+              <li>_________________________</li>
+              <li>_________________________</li>
+            </ol>
+          </td>
+        </tr>
+      </table>
+      
+      <div style="margin-top: 50px; text-align: center;">
+        <p><strong>Menyetujui/Mengetahui</strong></p>
+      </div>
+      
+      <table style="width: 100%; margin-top: 30px; font-size: 11pt;">
+        <tr>
+          <td style="width: 50%; text-align: center; vertical-align: top;">
+            <p><strong>Kepala Bidang Perdagangan</strong></p>
+            <br/><br/><br/>
+            <p style="font-weight: bold; text-decoration: underline;">I Ketut Antara, SH., MAP.</p>
+            <p>Penata Tk. I (III/d)</p>
+            <p>NIP. 197712262009011009</p>
+          </td>
+          <td style="width: 50%; text-align: center; vertical-align: top;">
+            <p><strong>Kepala Dinas Koperasi, UKM dan Perdagangan<br/>Kabupaten Badung</strong></p>
+            <br/><br/><br/>
+            <p style="font-weight: bold; text-decoration: underline;">Anak Agung Sagung Rosyawati, SE., MM</p>
+            <p>Pembina Tingkat I (IV/b)</p>
+            <p>NIP. 197110092000032003</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+}
+
+function showToast(msg, err=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `fixed bottom-5 right-5 px-5 py-3 rounded-lg shadow-lg z-50 text-white no-print ${err ? 'bg-red-600' : 'bg-emerald-600'}`;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 3000);
+}
+</script>
+</body>
+</html>
